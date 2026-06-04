@@ -16,3 +16,8 @@ dependencies = [
     "pypdf>=6.12.2",
     "python-dotenv>=1.2.2",
 ]
+
+[tool.uv.workspace]
+members = [
+    "ProductionReadyAPI",
+]
