@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: secure-ai-gateway
+    env: docker
+    repo: https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME # Update this to your repo link
+    plan: free # Can be updated to 'starter' or higher for production use
+    region: oregon # Choose closest region to your users
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PRIMARY_MODEL
+        value: llama-3.3-70b-versatile
+      # This syncs your secret key securely without hardcoding it in git
+      - key: GROQ_API_KEY
+        sync: true

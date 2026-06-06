@@ -19,8 +19,8 @@ class chatRequest(BaseModel):
         description="The user's message to the chatbot.",
     )
 
+    # FIXED: Removed the Ellipsis (...) so it accepts the default value cleanly
     thread_id: str = Field(
-        ...,
         default="default",
         description="Conversation thread ID.",
     )

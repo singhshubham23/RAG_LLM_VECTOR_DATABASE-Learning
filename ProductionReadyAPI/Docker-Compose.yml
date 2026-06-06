@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  api_gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: production_secure_gateway
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - APP_ENV=development
+    volumes:
+      - ./app:/app/app
+    restart: always
