@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request, Depends
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
@@ -51,6 +51,41 @@ app = FastAPI(title="Production Secure AI Gateway", version="1.0.0", lifespan=li
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
+
+
+@app.get("/", response_class=HTMLResponse)
+def home():
+    """Simple browser landing page with links to docs and health."""
+    return """
+    <!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Production Secure AI Gateway</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 0; padding: 40px; background: #0f172a; color: #e2e8f0; }
+          .card { max-width: 720px; margin: 0 auto; background: #111827; border: 1px solid #334155; border-radius: 16px; padding: 32px; }
+          a { color: #38bdf8; text-decoration: none; }
+          ul { line-height: 1.9; }
+          code { background: #1f2937; padding: 2px 6px; border-radius: 6px; }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <h1>Production Secure AI Gateway</h1>
+          <p>This service is running. Use the API docs below to test endpoints from your browser.</p>
+          <ul>
+            <li><a href="/docs">Swagger UI</a></li>
+            <li><a href="/redoc">ReDoc</a></li>
+            <li><a href="/health">Health check</a></li>
+            <li><a href="/metrics">Metrics</a></li>
+          </ul>
+          <p><strong>Note:</strong> <code>/chat</code> only accepts <code>POST</code>, so opening it directly in the browser will show <code>Method Not Allowed</code>.</p>
+        </div>
+      </body>
+    </html>
+    """
 
 
 @app.exception_handler(RateLimitExceeded)
